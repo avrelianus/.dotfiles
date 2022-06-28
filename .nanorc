@@ -1,74 +1,70 @@
-## TODO: take config from here https://bash-prompt.net/guides/nanorc-settings/
+# .nanorc file
+# Nano settigs, replace version (v4,v5 etc) https://www.nano-editor.org/dist/<version>/nano.html
+# Example config link: https://bash-prompt.net/guides/nanorc-settings/
 
-## .nanorc file
-## Check page for editing settings: https://www.nano-editor.org/dist/v2.3/nanorc.5.html 
+include "/usr/share/nano/*.nanorc" # Enables the syntax highlighting.
+set linenumbers             # Show line numbers
+set speller "aspell -x -c"  # Sets what spelling utility to use.
+set historylog              # Save the last 100 history searches for later use.
+set positionlog             # Saves the cursor position between editing sessions
+set cutfromcursor           # CTRL+K cuts from cursor position to end of line.
+set constantshow            # Displays useful information e.g. line number and position in the bottom bar.
+#set afterends              # Make Ctrl+Right stop at word ends instead of beginnings.
 
-## Tab settings
+#--------------------------------------------------------------------------------------#
+# Tab Settings
+#--------------------------------------------------------------------------------------#
 set tabsize 4
 set tabstospaces
 set autoindent
 
-set nowrap
-## Show line numbers. Not available in version (2.3.1)
-set linenumbers
 
-## Enables smooth scrolling
+#--------------------------------------------------------------------------------------#
+# Wrap Settings
+#--------------------------------------------------------------------------------------#
+set nowrap          # Do not wrap
+#set atblanks       # Wrap line at blanks.
+#set softwrap       # Enable softwrap of lines.
+
+
+#--------------------------------------------------------------------------------------#
+# Search Settings
+#--------------------------------------------------------------------------------------#
+set regexp          # Do extended regular expression searches by default.
+#set casesensitive  # Case insensitive search.
+
+
+#--------------------------------------------------------------------------------------#
+# Status Line
+#--------------------------------------------------------------------------------------#
+set nohelp          # Disable the help information (CTRL+G to view the help screen).
+#set morespace      # Use the blank line below the titlebar as extra editing space
+#set emptyline       # Do not use the line below the title bar, leaving it entirely blank.
+
+
+#--------------------------------------------------------------------------------------#
+# Mouse Support
+#--------------------------------------------------------------------------------------#
+# Mouse clicks can be used to place the cursor,
+# set the mark (with a double click), and execute shortcuts.
+# Text can be selected through dragging
+# by holding down the Shift key.
+set mouse
+# Enables smooth scrolling
 set smooth
 
-## Use the blank line below the titlebar as extra editing space.
-#set morespace
 
-## Enable mouse support, if available for your system. 
-## When enabled, mouse clicks can be used to place the cursor, 
-## set the mark (with a double click), and execute shortcuts. 
-## The mouse will work in the X Window System, and on the console 
-## when gpm is running. Text can still be selected through dragging 
-## by holding down the Shift key.
-set mouse
-
-## Use spelling checker spellprog instead of the built-in one, 
-## which calls spell.
-set speller spellprog
-
-## Use cut-to-end-of-line by default, instead of cutting the whole line.
-set cut
-
-## Do extended regular expression searches by default.
-#set regexp
-
-## Enable the use of ~/.nano/search_history for saving 
-## and reading search/replace strings.
-#set historylog
-
-########## KEY BINDINGS ##########
-## Make the Home key smarter. When Home is pressed anywhere 
-## but at the very beginning of non-whitespace characters on a 
-## line, the cursor will jump to that beginning 
-## (either forwards or backwards). If the cursor is already at that 
-## position, it will jump to the true beginning of the line.
-#set smarthome
-
-## Interpret the Delete key differently so that both Backspace and 
-## Delete work properly. You should only need to use this option 
-## if Backspace acts like Delete on your system.
-#set rebinddelete
-
-## Alt + ,  - Moves the cursor to the beginning of the previous word
-bind M-, prevword main
-## Alt + .  - Moves the cursor to the beginning of the next word.
-bind M-. nextword main
+#--------------------------------------------------------------------------------------#
+# Shortcut key bindings
+#--------------------------------------------------------------------------------------#
+bind ^F whereis all     # CTRL+F - Find
+#bind ^C copy main       # CTRC+C - Copy
+#bind ^V paste all       # CTRL+V - Paste
+#bind ^S savefile main   # CTRL+S - Save
 
 
-########## SYNTAX HIGHLIGHT ##########
-## Bourne shell scripts
-include "/usr/share/nano/sh.nanorc"
-## Nanorc files
-include "/usr/share/nano/nanorc.nanorc"
-## C/C++
-include "/usr/share/nano/c.nanorc"
-## Patch files
-include "/usr/share/nano/patch.nanorc"
-## Manpages
-include "/usr/share/nano/man.nanorc"
-## Perl
-include "/usr/share/nano/perl.nanorc"
+#--------------------------------------------------------------------------------------#
+# Backup - Enable and set a working backup directory
+#--------------------------------------------------------------------------------------#
+#set backup                              # Creates backups of your current file.
+#set backupdir "~/.cache/nano/backups/"  # The location of the backups.
