@@ -6,3 +6,73 @@ export HISTFILESIZE=20000
 [[ ":$PATH" != *":$HOME/bin:"* ]] && PATH="${PATH}:${HOME}/bin"
 
 export LESS="-M -I -R" # -N line numbers
+
+
+# variable TZ to use alternate timezone is set 
+unset TZ
+
+# set default editor
+if [ -z ${EDITOR+x} ]; then 
+    export EDITOR='nano'
+    #export EDITOR='micro'
+fi
+
+# Add aliases
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# Add git completion script taken from https://pagepro.co/blog/autocomplete-git-commands-and-branch-names-in-terminal/
+#if [ -f ~/.git-completion.bash ]; then
+#  . ~/.git-completion.bash
+#fi
+
+
+################## PYTHON SETUP ##################
+
+# PYTHONSTARTUP variable
+# Enables autocompletion with tab key in python REPL shell. Needs to be defined without qoutes otherwise 
+# python will not find the file
+export PYTHONSTARTUP=~/.pythonrc
+
+
+
+################## PROMPT SETUP ##################
+
+# Git branch
+git_branch_info() {
+    git branch 2>/dev/null | grep '^*' | colrm 1 2
+}
+export -f git_branch_info
+
+# Git top level
+git_top_level() {
+    basename 2> /dev/null `git rev-parse --show-toplevel 2> /dev/null`
+}
+export -f git_top_level
+
+# Set terminal window title
+# To set a specific title, print an escape sequence like this:
+#   echo -en "\033]0;Hello\a"
+# You can easily include the current path:
+#   echo -en "\033]0;$(pwd)\a"
+# Or, to replace your home directory's part with a tilde:
+#   echo -en "\033]0;$(pwd | sed -e "s;^$HOME;~;")\a"
+# Or, to only show the directory name without a path:
+#   echo -en "\033]0;$(basename `pwd`)\a"
+#
+# This is taken from https://makandracards.com/makandra/494001-linux-how-to-make-a-terminal-window-title-reflect-the-current-path
+#
+set-window-title() {
+  echo -en "\033]0;$(basename `pwd`)\a"
+}
+export -f set-window-title
+
+if [[ "$PROMPT_COMMAND" ]]; then
+  export PROMPT_COMMAND="$PROMPT_COMMAND;set-window-title"
+else
+  export PROMPT_COMMAND=set-window-title
+fi
+
+# Bash prompt
+export PS1="\[\e[1;32m\]\u@\h [\A] \[\e[1;34m\][\w]\[\e[m\] | \[\e[m\] \[\e[1;41m\][\$(git_top_level)]\[\e[m\] : \[\e[1;41m\]\$(git_branch_info)\[\e[m\]\n$ "
