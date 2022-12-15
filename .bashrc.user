@@ -1,0 +1,8 @@
+# history size
+export HISTSIZE=20000
+export HISTFILESIZE=20000
+
+# add home bin folder if it's not in the path var
+[[ ":$PATH" != *":$HOME/bin:"* ]] && PATH="${PATH}:${HOME}/bin"
+
+export LESS="-M -I -R" # -N line numbers
