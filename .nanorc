@@ -50,8 +50,6 @@ set nohelp          # Disable the help information (CTRL+G to view the help scre
 # Text can be selected through dragging
 # by holding down the Shift key.
 set mouse
-# Enables smooth scrolling
-set smooth
 
 
 #--------------------------------------------------------------------------------------#
