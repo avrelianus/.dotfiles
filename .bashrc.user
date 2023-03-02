@@ -1,6 +1,8 @@
-# history size
+################## HISTORY SETUP ##################
 export HISTSIZE=20000
 export HISTFILESIZE=20000
+export HISTTIMEFORMAT="%F %T "
+shopt -s histappend # history to append instead of overwriting Bash history
 
 # add home bin folder if it's not in the path var
 [[ ":$PATH" != *":$HOME/bin:"* ]] && PATH="${PATH}:${HOME}/bin"
@@ -36,20 +38,22 @@ fi
 export PYTHONSTARTUP=~/.pythonrc
 
 
+################### FUNCTIONS ####################
 
-################## PROMPT SETUP ##################
-
-# Git branch
-git_branch_info() {
-    git branch 2>/dev/null | grep '^*' | colrm 1 2
+# Initialize a new Git repository in a dir with basic files
+function git_init() {
+    if [ -z "$1" ]; then
+        printf "%s\n" "Please provide a directory name.";
+    else
+        mkdir "$1";
+        builtin cd "$1";
+        pwd;
+        git init;
+        touch readme.md .gitignore LICENSE;
+        echo "# $(basename $PWD)" >> readme.md
+    fi
 }
-export -f git_branch_info
-
-# Git top level
-git_top_level() {
-    basename 2> /dev/null `git rev-parse --show-toplevel 2> /dev/null`
-}
-export -f git_top_level
+export -f git_init
 
 # Set terminal window title
 # To set a specific title, print an escape sequence like this:
@@ -74,5 +78,25 @@ else
   export PROMPT_COMMAND=set-window-title
 fi
 
+function find_largest_files() {
+    du -h -x -s -- * | sort -r -h | head -20;
+}
+
+################## PROMPT SETUP ##################
+
+# Display the current Git branch in the Bash prompt.
+function git_branch() {
+    if [ -d .git ] ; then
+        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+    fi
+}
+export -f git_branch
+
+# Git top level
+git_top_level() {
+    basename 2> /dev/null `git rev-parse --show-toplevel 2> /dev/null`
+}
+export -f git_top_level
+
 # Bash prompt
-export PS1="\[\e[1;32m\]\u@\h [\A] \[\e[1;34m\][\w]\[\e[m\] | \[\e[m\] \[\e[1;41m\][\$(git_top_level)]\[\e[m\] : \[\e[1;41m\]\$(git_branch_info)\[\e[m\]\n$ "
+export PS1="\[\e[1;32m\]\u@\h [\A] \[\e[1;34m\][\w]\[\e[m\] \[\e[1;41m\]\$(git_branch)\[\e[m\]\nλ "
